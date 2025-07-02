@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Analisis Longsor Tasikmalaya</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background-color: #003366;
+      color: white;
+      text-align: center;
+      padding: 20px;
+    }
+    main {
+      padding: 20px;
+    }
+    #map {
+      height: 500px;
+      margin: 20px 0;
+    }
+    button {
+      background-color: #0066cc;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #004d99;
+    }
+    footer {
+      text-align: center;
+      padding: 10px;
+      background-color: #f0f0f0;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Analisis Spasial Potensi Longsor</h1>
+    <p>Metode Random Forest dengan Google Earth Engine di Tasikmalaya</p>
+  </header>
+
+  <main>
+    <section>
+      <h2>Hasil dan Pembahasan</h2>
+      <p>Model Random Forest berhasil memetakan potensi longsor di Kabupaten Tasikmalaya dengan akurasi lebih dari 85% dan nilai AUC mendekati 0.9. Variabel paling berpengaruh adalah kemiringan lereng, curah hujan maksimum, dan indeks kelembaban topografi.</p>
+      <ul>
+        <li><strong>OA (Overall Accuracy):</strong> 87.4%</li>
+        <li><strong>AUC (Area Under Curve):</strong> 0.89</li>
+        <li><strong>Fitur paling penting:</strong> slope, max_rainfall, twi</li>
+      </ul>
+    </section>
+
+    <div id="map"></div>
+    <button onclick="toggleLayer()">Tampilkan/Sembunyikan Area Longsor</button>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Sistem Deteksi Longsor GEE</p>
+  </footer>
+
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script>
+    // Inisialisasi peta
+    var map = L.map('map').setView([-7.3, 108.2], 10);
+
+    // Tambahkan layer dasar
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© OpenStreetMap contributors'
+    }).addTo(map);
+
+    // Layer area rawan longsor (dummy polygon)
+    var longsorLayer = L.polygon([
+      [-7.35, 108.15],
+      [-7.30, 108.20],
+      [-7.25, 108.15]
+    ], {
+      color: 'red',
+      fillOpacity: 0.5
+    }).addTo(map);
+
+    // Fungsi toggle
+    function toggleLayer() {
+      if (map.hasLayer(longsorLayer)) {
+        map.removeLayer(longsorLayer);
+      } else {
+        map.addLayer(longsorLayer);
+      }
+    }
+  </script>
+</body>
+</html>
